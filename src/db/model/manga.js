@@ -6,10 +6,12 @@ const MangaSchema = new Schema(
         mangaName: {
             type: String,
             required: true,
+            default: "",
         },
-        mangaChapter: {
-            type: String,
+        chapterData: {
+            type: Object,
             required: true,
+            default: {},
         },
     },
     {
