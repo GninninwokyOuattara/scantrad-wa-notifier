@@ -2,7 +2,6 @@ const Mangas = require("../db/model/manga"),
     { areTheSame, generateMessage } = require("./quickUtility"),
     osmosis = require("osmosis"),
     lastPublished = require("./scrapper");
-require("../db/mongoose");
 
 setInterval(() => {
     (async () => {
@@ -67,4 +66,4 @@ setInterval(() => {
             }
         }
     })();
-}, 5000);
+}, 10000);
