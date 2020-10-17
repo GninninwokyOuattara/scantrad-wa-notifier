@@ -1,63 +1,9 @@
 const Mangas = require("../db/model/manga"),
-    { areTheSame, generateMessage } = require("./quickUtility");
-require("../db/mongoose");
-const osmosis = require("osmosis"),
+    { areTheSame, generateMessage } = require("./quickUtility"),
+    osmosis = require("osmosis"),
     lastPublished = require("./scrapper");
-let chapter = [];
-let i = 0;
+require("../db/mongoose");
 
-// console.log("ici");
-// lastPublished().then((chapter) => {
-//     console.log(i, chapter);
-// });
-
-// setInterval(() => {
-//     (async () => {
-//         //get the last published chapter on scantrad
-//         const chapter = await lastPublished();
-//         if (chapter && chapter != {}) {
-//             console.log(chapter);
-//             const lastStored = await Mangas.findOne({
-//                 mangaName: chapter.manga,
-//             });
-//             console.log(lastStored);
-//             if (lastStored) {
-//                 //check is lastStored == current chapter
-//                 if (chapter.num != lastStored.chapterData.num) {
-//                     //update
-//                     const updated = await Mangas.updateOne(
-//                         { mangaName: chapter.manga },
-//                         {
-//                             chapterData: {
-//                                 title: chapter.title,
-//                                 link: "https://scantrad.fr/" + chapter.link,
-//                                 num: chapter.num,
-//                             },
-//                         }
-//                     );
-//                     console.log(updated);
-//                 } else {
-//                     //pass
-//                     console.log("Passed");
-//                 }
-//             } else {
-//                 //Most likely a new project they picked up, so we add.
-//                 try {
-//                     const stored = await Mangas.create({
-//                         mangaName: chapter.manga,
-//                         chapterData: {
-//                             title: chapter.title,
-//                             link: "https://scantrad.fr/" + chapter.link,
-//                             num: chapter.num,
-//                         },
-//                     });
-//                 } catch (err) {
-//                     //OHH NOOOO!!!!... Anyway.
-//                 }
-//             }
-//         }
-//     })();
-// }, 5000);
 setInterval(() => {
     (async () => {
         //Retrieve last published chapter
@@ -100,13 +46,14 @@ setInterval(() => {
                         console.log(error.message);
                     }
                 } else {
-                    console.log("same chapter");
+                    //We just pass, nothing to do if it's the same thing.
                 }
             } else {
                 //lastStored == null, meaning it does not exist in db
                 //It probably is a new manga, so we have to add it to db.
+                let stored;
                 try {
-                    const stored = await Mangas.create({
+                    stored = await Mangas.create({
                         mangaName: chapter.manga,
                         chapterData: {
                             title: chapter.title,
