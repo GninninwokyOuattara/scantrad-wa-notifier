@@ -1,4 +1,5 @@
 const Mangas = require("../db/model/manga"),
+    Blacklist = require("../db/model/blacklist"),
     { areTheSame, generateMessage } = require("./quickUtility"),
     osmosis = require("osmosis"),
     lastPublished = require("./scrapper");
@@ -7,8 +8,11 @@ setInterval(() => {
     (async () => {
         //Retrieve last published chapter
         const chapter = await lastPublished();
-        // console.log("last chapter----- ", chapter);
-
+        const blacklist = await Blacklist.findOne({});
+        if (blacklist.backlisted.includes(chapter.manga)) {
+            //skip if the manga is blacklisted.
+            return;
+        }
         if (chapter && chapter != {}) {
             let lastStored;
             //Making sure chapter ain't empty, happened before...
