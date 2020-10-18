@@ -2,12 +2,12 @@ const Mangas = require("../db/model/manga"),
     { areTheSame, generateMessage } = require("./quickUtility"),
     osmosis = require("osmosis"),
     lastPublished = require("./scrapper");
-
+console.log("Watching scantrad...");
 setInterval(() => {
     (async () => {
         //Retrieve last published chapter
         const chapter = await lastPublished();
-        console.log("last chapter----- ", chapter);
+        // console.log("last chapter----- ", chapter);
 
         if (chapter && chapter != {}) {
             let lastStored;

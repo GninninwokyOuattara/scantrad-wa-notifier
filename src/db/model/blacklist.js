@@ -3,9 +3,10 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const BlacklistSchema = new Schema(
     {
-        data: {
+        blacklisted: {
             type: Array,
-            required: true,
+            // required: true,
+            default: [],
         },
     },
     {
