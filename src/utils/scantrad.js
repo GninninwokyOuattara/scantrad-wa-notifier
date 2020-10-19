@@ -2,23 +2,24 @@ const Mangas = require("../db/model/manga"),
     Blacklist = require("../db/model/blacklist"),
     { areTheSame, generateMessage } = require("./quickUtility"),
     osmosis = require("osmosis"),
-    lastPublished = require("./scrapper");
+    { lastPublished, getLastPublished } = require("./scrapper");
 
 console.log("Watching scantrad...");
 setInterval(() => {
     (async () => {
         //Retrieve last published chapter
 
-        const chapter = await lastPublished();
-        console.log("eh");
+        // const chapter = await getLastPublished();
         // const blacklist = await Blacklist.findOne({});
-        // console.log(blacklist.blacklisted);
-        // console.log(chapter.manga);
-        // console.log(blacklist.blacklisted.includes(chapter.manga));
-        // if (blacklist.backlisted.includes(chapter.manga)) {
-        //     //skip if the manga is blacklisted.
-        //     return;
-        // }
+        const [chapter, blacklist] = await Promise.all([
+            getLastPublished(),
+            Blacklist.findOne({}),
+        ]);
+        if (blacklist.blacklisted.includes(chapter.manga)) {
+            //skip if the manga is blacklisted.
+            console.log("skipped");
+            return;
+        }
         if (chapter && chapter != {}) {
             let lastStored;
             //Making sure chapter ain't empty, happened before...

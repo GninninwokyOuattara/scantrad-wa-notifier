@@ -27,7 +27,7 @@ const getLastPublished = () => {
             .get("https://scantrad.net")
             .find(".hm-info")
             .set({
-                manga: ".hmi-titre a@href",
+                manga: ".hmi-titre > a",
                 title: ".hmi-sub",
                 num: ".hmi-titre .hmit-numero",
                 link: ".hmi-sub@href",
