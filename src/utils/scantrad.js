@@ -4,6 +4,8 @@ const Mangas = require("../db/model/manga"),
         areTheSame,
         generateMessage,
         generateMessageWithoutLink,
+        sendNew,
+        sendUpdate,
     } = require("./quickUtility"),
     osmosis = require("osmosis"),
     { lastPublished, getLastPublished } = require("./scrapper"),
@@ -22,7 +24,7 @@ setInterval(() => {
         ]);
         if (blacklist.blacklisted.includes(chapter.manga)) {
             //skip if the manga is blacklisted.
-            console.log("skipped");
+            //Meaning, no one want notification of it.
             return;
         }
         if (chapter && chapter != {}) {
@@ -63,22 +65,9 @@ setInterval(() => {
                         //Then notify
                         console.log("u", updated);
                         sendUpdate(client, updated);
-
-                        // client.sendLinkWithAutoPreview(
-                        //     process.env.GROUP_ID,
-                        //     "https://youtube.fr",
-                        //     "update"
-                        // );
-                        // return notify(updated, false);
                     } catch (error) {
                         console.log(error.message);
                     }
-                    // console.log("Envoie update");
-                    // if (
-                    //     await client.sendText(process.env.GROUP_ID, "updated")
-                    // ) {
-                    //     console.log("Fin update");
-                    // }
                 } else {
                     //We just pass, nothing to do if it's the same thing.
                 }
@@ -98,17 +87,6 @@ setInterval(() => {
                     //Then we notify
                     console.log(stored);
                     sendNew(client, stored);
-                    // console.log("Envoie nouveau");
-                    // if (await client.sendText(process.env.GROUP_ID, "new")) {
-                    //     console.log("Fin nouveau");
-                    // }
-
-                    // client.sendLinkWithAutoPreview(
-                    //     process.env.GROUP_ID,
-                    //     "https://google.fr",
-                    //     "new"
-                    // );
-                    // return notify(stored, true);
                 } catch (error) {
                     console.log(error.message);
                 }
@@ -116,15 +94,3 @@ setInterval(() => {
         }
     })();
 }, 10000);
-
-const sendNew = async (cli, name) => {
-    let mess = generateMessage(name, true);
-    console.log(mess);
-    cli.sendText(process.env.GROUP_ID, mess);
-};
-
-const sendUpdate = async (cli, name) => {
-    let mess = generateMessage(name, false);
-    console.log(mess);
-    cli.sendText(process.env.GROUP_ID, mess);
-};

@@ -2,7 +2,7 @@ const generateMessage = (obj, isNew = false) => {
     if (isNew) {
         return `*${process.env.BOT_NAME}*\n\n      ☆☆☆☆ NEW ☆☆☆☆\n\n${obj.mangaName}\nChapter - ${obj.chapterData.num}\n${obj.chapterData.title}\n${obj.chapterData.link}`;
     }
-    return `${process.env.BOT_NAME}\n\n${obj.mangaName}\nChapter - ${obj.chapterData.num}\n${obj.chapterData.title}\n${obj.chapterData.link}`;
+    return `*${process.env.BOT_NAME}*\n\n${obj.mangaName}\nChapter - ${obj.chapterData.num}\n${obj.chapterData.title}\n${obj.chapterData.link}`;
 };
 
 const generateMessageWithoutLink = (obj, isNew = false) => {
@@ -24,8 +24,23 @@ const areTheSame = (first, second) => {
     }
     return false;
 };
+
+const sendNew = async (cli, name) => {
+    //Send message via to group with generated message for New stuff
+    let mess = generateMessage(name, true);
+    cli.sendText(process.env.GROUP_ID, mess);
+};
+
+const sendUpdate = async (cli, name) => {
+    //Send message via to group with generated message for Old stuff
+    let mess = generateMessage(name, false);
+    cli.sendText(process.env.GROUP_ID, mess);
+};
+
 module.exports = {
-    generateMessage: generateMessage,
-    areTheSame: areTheSame,
+    generateMessage,
+    areTheSame,
     generateMessageWithoutLink,
+    sendNew,
+    sendUpdate,
 };
