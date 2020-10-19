@@ -26,6 +26,7 @@ const handler = (action, title) => {
     switch (action) {
         //Control on first arg after bot call
         case "blacklist":
+        case "bl":
             if (title) {
                 //Add title to blacklist
                 return Commands.execute("addToBlackList", title);
