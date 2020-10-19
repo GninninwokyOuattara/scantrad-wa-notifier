@@ -20,4 +20,24 @@ const lastPublished = async () => {
     return false;
 };
 
-module.exports = lastPublished;
+const getLastPublished = () => {
+    let chapterList = [];
+    return new Promise((resolve, reject) => {
+        osmosis
+            .get("https://scantrad.net")
+            .find(".hm-info")
+            .set({
+                manga: ".hmi-titre a@href",
+                title: ".hmi-sub",
+                num: ".hmi-titre .hmit-numero",
+                link: ".hmi-sub@href",
+            })
+            .data((item) => {
+                chapterList.push(item);
+            })
+            .error((err) => reject(err))
+            .done(() => resolve(chapterList[0]));
+    });
+};
+
+module.exports = { lastPublished, getLastPublished };
