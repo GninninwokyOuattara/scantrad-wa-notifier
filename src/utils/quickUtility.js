@@ -1,7 +1,16 @@
-const generateMessage = (obj) => {
-    return `${process.env.BOT_NAME}\n\n${obj.mangaName} - ${obj.chapterData.num}\n${obj.chapterData.title}\n${obj.chapterData.link}`;
+const generateMessage = (obj, isNew = false) => {
+    if (isNew) {
+        return `*${process.env.BOT_NAME}*\n\n      ☆☆☆☆ NEW ☆☆☆☆\n\n${obj.mangaName}\nChapter - ${obj.chapterData.num}\n${obj.chapterData.title}\n${obj.chapterData.link}`;
+    }
+    return `${process.env.BOT_NAME}\n\n${obj.mangaName}\nChapter - ${obj.chapterData.num}\n${obj.chapterData.title}\n${obj.chapterData.link}`;
 };
 
+const generateMessageWithoutLink = (obj, isNew = false) => {
+    if (isNew) {
+        return `${process.env.BOT_NAME}\n\n     ☆☆☆☆ NEW ☆☆☆☆\n${obj.mangaName}\nChapter - ${obj.chapterData.num}\n${obj.chapterData.title}`;
+    }
+    return `${process.env.BOT_NAME}\n\n${obj.mangaName}\nChapter - ${obj.chapterData.num}\n${obj.chapterData.title}`;
+};
 const areTheSame = (first, second) => {
     //Compare two object
     //first -> current chapter
@@ -18,4 +27,5 @@ const areTheSame = (first, second) => {
 module.exports = {
     generateMessage: generateMessage,
     areTheSame: areTheSame,
+    generateMessageWithoutLink,
 };

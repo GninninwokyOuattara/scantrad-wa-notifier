@@ -7,7 +7,8 @@ const regex = new RegExp(
 );
 console.log("listener listening...");
 
-client.onAnyMessage(async (message) => {
+const cli = client;
+cli.onAnyMessage(async (message) => {
     //NOTE : SOMETIMES MESSAGES DO NOT TRIGGER THE LISTENER.
 
     //Making sure message come from the good chat group
