@@ -11,12 +11,15 @@ const Commands = {
         return;
     },
     invalidCommand: function () {
+        //Return "Invalid Command" for Invalid Command...
         return client.sendText(process.env.GROUP_ID, "Invalid command");
     },
     sendResult: function (title, text) {
+        //Return result of a command
         return client.sendText(process.env.GROUP_ID, `${title} ${text}`);
     },
     addToBlackList: function (title) {
+        //Add argument given as parameter to the blacklist
         Blacklist.findOne({}).then((data) => {
             //return either empty array or not
             if (data.blacklisted.includes(title)) {
@@ -43,7 +46,7 @@ const Commands = {
     sendBlackList: function () {
         Blacklist.findOne({}).then((data) => {
             //Retrieve array of blacklist from db
-            console.log(data.blacklisted);
+            // console.log(data.blacklisted);
             let out = "";
             data.blacklisted.forEach((item) => {
                 //build the output
@@ -55,6 +58,10 @@ const Commands = {
                 return client.sendText(process.env.GROUP_ID, "Empty");
             }
         });
+    },
+    notify: function () {
+        //Called to notify chat group of new manga
+        let out = "";
     },
 };
 

@@ -2,6 +2,9 @@ const Command = require("osmosis/lib/Command");
 const Blacklist = require("./db/model/blacklist"),
     Commands = require("./utils/botCommands");
 
+const regex = new RegExp(
+    "(" + process.env.BOT_COMMAND + ") (?<command>\\w+) ?(?<arg>.*)"
+);
 console.log("listener listening...");
 
 client.onAnyMessage(async (message) => {
@@ -9,23 +12,16 @@ client.onAnyMessage(async (message) => {
 
     //Making sure message come from the good chat group
     inGoodGroup = message.chatId == process.env.GROUP_ID;
-    //split the message in case it's a command format
-    q = message.body.split(" ");
-    if (message.fromMe && inGoodGroup && q[0] == process.env.BOT_COMMAND) {
-        //- Message came from host
+    let validFormat = regex.exec(message.body);
+
+    if (inGoodGroup && validFormat) {
         //- In the correct chat group
-        //- First arg correspond to the bot pattern.
-        if (q.length > 3 || q.length == 1) {
-            //check length of array
-            //if > 3; It's not a command supported yet.
-            //Calling the bot is not a command too.
-            return Commands.execute("invalidCommand");
-        }
-        return handler(q[1], q[2]);
+        //- Format correspond to command
+        return handler(validFormat.groups.command, validFormat.groups.arg);
     }
 });
 
-const handler = (action, title = undefined) => {
+const handler = (action, title) => {
     switch (action) {
         //Control on first arg after bot call
         case "blacklist":
@@ -42,6 +38,7 @@ const handler = (action, title = undefined) => {
             break;
 
         default:
+            //Doesn't correspond to any action supported.
             Commands.execute("invalidCommand");
             break;
     }
