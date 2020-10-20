@@ -15,7 +15,6 @@ cli.onAnyMessage(async (message) => {
     //Making sure message come from the good chat group
     inGoodGroup = message.chatId == process.env.GROUP_ID;
     let validFormat = regex.exec(message.body);
-    console.log(validFormat);
     if (inGoodGroup && validFormat) {
         //- In the correct chat group
         //- Format correspond to command
@@ -62,7 +61,7 @@ const handler = (action, title) => {
         case "c":
             //return command(s) list
             if (title) {
-                //
+                return Commands.execute("invalidCommand");
             }
             Commands.execute("commandList");
             break;
