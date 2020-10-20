@@ -6,28 +6,18 @@ const wa = require("@open-wa/wa-automate"),
     Commands = require("./utils/botCommands");
 
 require("./db/mongoose");
-// require("./sessionCreator");
+
 global.client = {};
-// try {
-//     wa.create().then((client) => {
-//         global.client = client;
-//         // require("./utils/scantrad");
-//         require("./listener");
-//     });
-// } catch (error) {
-//     throw error.message;
-// }
+global.running = false;
 
 const runner = async () => {
     try {
         global.client = await wa.create();
         require("./listener");
         require("./utils/scantrad");
-    } catch (error) {
-        if (error.name == "TimeoutError") {
-            console.log("TimeoutError. Retrying...");
-            runner();
-        }
+        running = true;
+    } catch (err) {
+        throw err.message;
     }
 };
 
