@@ -40,4 +40,22 @@ const getLastPublished = () => {
     });
 };
 
-module.exports = { lastPublished, getLastPublished };
+const getMangaState = (manga) => {
+    let out = {};
+    return new Promise((resolve, reject) => {
+        osmosis
+            .get("https://scantrad.net/planning")
+            .find(".home-manga")
+            .set({
+                manga: "@href",
+                state: ".hma-etat",
+            })
+            .data((item) => {
+                out[item.manga] = item.state;
+            })
+            .error((err) => reject(err))
+            .done(() => resolve(out[manga]));
+    });
+};
+
+module.exports = { lastPublished, getLastPublished, getMangaState };

@@ -14,6 +14,7 @@ cli.onAnyMessage(async (message) => {
     //Making sure message come from the good chat group
     inGoodGroup = message.chatId == process.env.GROUP_ID;
     let validFormat = regex.exec(message.body);
+    console.log(validFormat);
     if (inGoodGroup && validFormat) {
         //- In the correct chat group
         //- Format correspond to command
@@ -23,9 +24,9 @@ cli.onAnyMessage(async (message) => {
 
 const handler = (action, title) => {
     switch (action) {
-        //Control on first arg after bot call
+        //Control on first arg (action) given after bot call
         case "blacklist":
-        case "bl":
+        case "b":
             if (title) {
                 //Add title to blacklist
                 return Commands.execute("addToBlackList", title);
@@ -38,14 +39,28 @@ const handler = (action, title) => {
             }
             break;
         case "rblacklist":
-        case "rbl":
+        case "rb":
             if (title) {
                 //remove title from blacklist
                 return Commands.execute("removeFromBlackList", title);
             }
             Commands.execute("sendResult", "No", "manga specified");
             break;
-
+        case "state":
+        case "s":
+            //Look for current state of manga.
+            if (title) {
+                return Commands.execute(
+                    "MangaState",
+                    title.trim().toLowerCase().replace(/ /g, "-")
+                );
+            }
+            Commands.execute("sendResult", "No", "manga specified");
+            break;
+        case "command":
+        case "c":
+            //return command(s) list
+            break;
         default:
             //Doesn't correspond to any action supported.
             Commands.execute("invalidCommand");

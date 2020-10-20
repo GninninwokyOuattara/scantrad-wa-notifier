@@ -1,4 +1,5 @@
-const Blacklist = require("../db/model/blacklist");
+const Blacklist = require("../db/model/blacklist"),
+    { getMangaState } = require("./scrapper");
 
 const Commands = {
     execute: function (name) {
@@ -82,6 +83,20 @@ const Commands = {
                 return Commands.execute("sendResult", title, "Not blacklisted");
             }
         });
+    },
+    MangaState: function (title) {
+        let state = "";
+        getMangaState(title)
+            .then((res) => {
+                state = res;
+                if (state) {
+                    return Commands.execute("sendResult", "> ", state);
+                }
+                return Commands.execute("sendResult", "Manga", "not Found");
+            })
+            .catch((err) => {
+                return Commands.execute("sendResult", "Unexpected", "Error");
+            });
     },
 };
 
