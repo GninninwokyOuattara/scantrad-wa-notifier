@@ -14,7 +14,6 @@ cli.onAnyMessage(async (message) => {
     //Making sure message come from the good chat group
     inGoodGroup = message.chatId == process.env.GROUP_ID;
     let validFormat = regex.exec(message.body);
-
     if (inGoodGroup && validFormat) {
         //- In the correct chat group
         //- Format correspond to command
@@ -37,6 +36,14 @@ const handler = (action, title) => {
                     return Commands.execute("sendBlackList");
                 });
             }
+            break;
+        case "rblacklist":
+        case "rbl":
+            if (title) {
+                //remove title from blacklist
+                return Commands.execute("removeFromBlackList", title);
+            }
+            Commands.execute("sendResult", "No", "manga specified");
             break;
 
         default:

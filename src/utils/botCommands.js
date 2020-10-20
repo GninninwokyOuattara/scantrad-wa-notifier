@@ -59,9 +59,29 @@ const Commands = {
             }
         });
     },
-    notify: function () {
-        //Called to notify chat group of new manga
-        let out = "";
+    removeFromBlackList: function (title) {
+        //Retrieve array of blacklist
+        Blacklist.findOne({}).then((data) => {
+            //return either empty array or not
+            if (data.blacklisted.includes(title)) {
+                let index = data.blacklisted.indexOf(title);
+                if (index > -1) {
+                    data.blacklisted.splice(index, 1);
+                    Blacklist.findOneAndUpdate(
+                        {},
+                        { blacklisted: data.blacklisted }
+                    ).then(() => {
+                        return Commands.execute(
+                            "sendResult",
+                            title,
+                            "Removed from blacklist"
+                        );
+                    });
+                }
+            } else {
+                return Commands.execute("sendResult", title, "Not blacklisted");
+            }
+        });
     },
 };
 
