@@ -84,7 +84,7 @@ const Commands = {
             }
         });
     },
-    MangaState: function (title) {
+    mangaState: function (title) {
         let state = "";
         getMangaState(title)
             .then((res) => {
@@ -97,6 +97,13 @@ const Commands = {
             .catch((err) => {
                 return Commands.execute("sendResult", "Unexpected", "Error");
             });
+    },
+    commandList: function () {
+        return Commands.execute(
+            "sendResult",
+            ">Commands List\n\n",
+            `Call the bot with ${process.env.BOT_COMMAND}\n\n- <blacklist | b> + <title>\n- - if <title>, add title to blacklist.\n- - else, show blacklisted title.\n\n- <rblacklist | rb> <title>\n- - remove <title> from blacklist\n\n- <state | s> <title>\n- - show <title> translation state.`
+        );
     },
 };
 

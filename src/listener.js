@@ -10,6 +10,7 @@ console.log("listener listening...");
 const cli = client;
 cli.onAnyMessage(async (message) => {
     //NOTE : SOMETIMES MESSAGES DO NOT TRIGGER THE LISTENER.
+    //1 - Might happen. 2 - Suspicious. 3 - Something definitely wrong
 
     //Making sure message come from the good chat group
     inGoodGroup = message.chatId == process.env.GROUP_ID;
@@ -51,7 +52,7 @@ const handler = (action, title) => {
             //Look for current state of manga.
             if (title) {
                 return Commands.execute(
-                    "MangaState",
+                    "mangaState",
                     title.trim().toLowerCase().replace(/ /g, "-")
                 );
             }
@@ -60,6 +61,10 @@ const handler = (action, title) => {
         case "command":
         case "c":
             //return command(s) list
+            if (title) {
+                //
+            }
+            Commands.execute("commandList");
             break;
         default:
             //Doesn't correspond to any action supported.
