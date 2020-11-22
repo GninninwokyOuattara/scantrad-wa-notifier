@@ -18,10 +18,18 @@ setInterval(() => {
 
         // const chapter = await getLastPublished();
         // const blacklist = await Blacklist.findOne({});
-        const [chapter, blacklist] = await Promise.all([
-            getLastPublished(),
-            Blacklist.findOne({}),
-        ]);
+        let chapter;
+        let blacklist;
+        try {
+            [chapter, blacklist] = await Promise.all([
+                getLastPublished(),
+                Blacklist.findOne({}),
+            ]);
+        } catch (error) {
+            console.log(error);
+            return;
+        }
+
         if (blacklist.blacklisted.includes(chapter.manga)) {
             //skip if the manga is blacklisted.
             //Meaning, no one want notification of it.
@@ -63,7 +71,7 @@ setInterval(() => {
                             }
                         );
                         //Then notify
-                        console.log("u", updated);
+                        console.log("updated : ", updated);
                         sendUpdate(client, updated);
                     } catch (error) {
                         console.log(error.message);
@@ -85,7 +93,7 @@ setInterval(() => {
                         },
                     });
                     //Then we notify
-                    console.log(stored);
+                    console.log("new : ", stored);
                     sendNew(client, stored);
                 } catch (error) {
                     console.log(error.message);
