@@ -1,8 +1,8 @@
 const generateMessage = (obj, isNew = false) => {
     if (isNew) {
-        return `*${process.env.BOT_NAME}*\n\n      ☆☆☆☆ NEW ☆☆☆☆\n\n${obj.mangaName}\nChapter - ${obj.chapterData.num}\n${obj.chapterData.title}\n${obj.chapterData.link}`;
+        return `\`\`\`${process.env.BOT_NAME}\n\n      ☆☆☆☆ NEW ☆☆☆☆\n\n——————————————————————————————\n${obj.mangaName}\nChapter - ${obj.chapterData.num}\n${obj.chapterData.title}\n——————————————————————————————\n${obj.chapterData.link}\n——————————————————————————————\`\`\``;
     }
-    return `*${process.env.BOT_NAME}*\n\n${obj.mangaName}\nChapter - ${obj.chapterData.num}\n${obj.chapterData.title}\n${obj.chapterData.link}`;
+    return `\`\`\`${process.env.BOT_NAME}\n\n——————————————————————————————\n${obj.mangaName}\nChapter - ${obj.chapterData.num}\n${obj.chapterData.title}\n——————————————————————————————\n${obj.chapterData.link}\n——————————————————————————————\`\`\``;
 };
 
 const generateMessageWithoutLink = (obj, isNew = false) => {
@@ -34,6 +34,7 @@ const sendNew = async (cli, name) => {
 const sendUpdate = async (cli, name) => {
     //Send message via to group with generated message for Old stuff
     let mess = generateMessage(name, false);
+    console.log(mess);
     cli.sendText(process.env.GROUP_ID, mess);
 };
 
