@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "goose": "env-cmd -f ./config/dev.env node src/db/mongoose.js",
-    "once" : "env-cmd -f ./config/dev.env node src/index.js",
-    "scant" : "env-cmd -f ./config/dev.env node src/utils/scantrad.js"
+    "once": "env-cmd -f ./config/dev.env node src/index.js",
+    "scant": "env-cmd -f ./config/dev.env node src/utils/scantrad.js"
   },
   "author": "",
   "license": "ISC",
